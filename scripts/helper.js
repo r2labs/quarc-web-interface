@@ -5,6 +5,35 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 // window.URL = window.URL || window.webkitURL;
 
+function get_mouse_pos(cnv, evt) {
+
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+clicknum = 1;
+
+video.addEventListener('click', function(evt) {
+
+    var pos = get_mouse_pos(canvas, evt);
+    draw_x(ctx, pos.x, pos.y, 10);
+    console.log("video mouse pressed at " + pos.x + ", " + pos.y);
+
+}, false);
+
+function draw_x(ctx, center_x, center_y, inner_radius) {
+    ctx.beginPath();
+    ctx.strokeStyle = 'blue';
+    ctx.moveTo(center_x - inner_radius, center_y - inner_radius);
+    ctx.lineTo(center_x + inner_radius, center_y + inner_radius);
+    ctx.moveTo(center_x - inner_radius, center_y + inner_radius);
+    ctx.lineTo(center_x + inner_radius, center_y - inner_radius);
+    ctx.stroke();
+}
+
 function gotStream(stream) {
     console.log("Getting Stream");
 
@@ -17,9 +46,11 @@ function gotStream(stream) {
     video.src = window.URL.createObjectURL(stream);
 
     setTimeout(function() {
+        console.log("Setting canvas width...");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-    }, 50);
+        console.log("Canvas: " + ctx.canvas.width + ", " + ctx.canvas.height);
+    }, 3000);
 }
 
 function noStream(error) {

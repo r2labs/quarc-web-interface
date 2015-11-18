@@ -1,0 +1,26 @@
+body {
+    background-color: #ddd;
+}
+
+#outer {
+    position: relative;
+    /* border: 1px solid green; */
+}
+
+.box {
+    width: 640px;
+    height: 640px;
+}
+
+#first {
+    z-index: -10;
+}
+
+#second {
+    opacity: 0.75;
+    border: 1px solid green;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+}
