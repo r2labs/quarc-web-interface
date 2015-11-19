@@ -6,8 +6,8 @@ var grid = function(x, y, width, height, phywidth, phyheight) {
     this.height = height;
     this.phywidth = phywidth;
     this.phyheight = phyheight;
-    this.flairdown = new flair(0, 0, 10, true, 'red');
-    this.flairmove = new flair(0, 0, 10, true, 'blue');
+    this.flairdown = new flair(0, 0, 25, true, 'red');
+    this.flairmove = new flair(0, 0, 25, true, 'blue');
 }
 
 grid.prototype.draw = function(ctx) {
@@ -42,6 +42,7 @@ grid.prototype.mousemove = function(ctx, x, y) {
 
 grid.prototype.mouseup = function(ctx, x, y) {
     this.flairmove.interactive = false;
+    this.flairmove.draw(ctx);
 }
 
 var flair = function(x, y, radius, hidden, style) {
