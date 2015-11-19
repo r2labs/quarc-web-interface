@@ -104,6 +104,7 @@ grid.prototype.pickplace_mouseup = function(ctx, x, y) {
     var place_phy = this.phy(this.flairmove.x, this.flairmove.y);
     console.log("pick: (" + pick_phy.x + ", " + pick_phy.y + ")");
     console.log("place: (" + place_phy.x + ", " + place_phy.y + ")");
+    pickplace(pick_phy.x, pick_phy.y, place_phy.x, place_phy.y);
 }
 
 grid.prototype.follow_mousedown = function(ctx, x, y) {
