@@ -72,7 +72,6 @@ grid.prototype.mouseup = function(ctx, x, y, mode) {
 
 grid.prototype.switch_mode = function(ctx, mode) {
     this.flairdown.hidden = true;
-    this.flairmove.hidden = true;
     this.draw(ctx);
 }
 
