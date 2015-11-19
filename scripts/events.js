@@ -3,20 +3,20 @@ var event;
 function goto(x, y, z, ga) {
     if (ga == undefined) { ga = -90; }
     jQuery.ajax({
-        url: 'http://localhost:8080/goto' + '?x=' + x + "&y=" + y + "&z=" + z + "&ga_d=" + ga,
+        url: 'http://localhost:8080/goto' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
     });
 }
 
 function grip(pct) {
     if (pct == undefined) { pct = 1.0 }
     jQuery.ajax({
-        url: 'http://localhost:8080/grip' + '?g=' + pct
+        url: 'http://localhost:8080/grip' + '?gripper_percent=' + pct
     });
 }
 
 function ungrip() {
     jQuery.ajax({
-        url: 'http://localhost:8080/grip' + '?g=0.0',
+        url: 'http://localhost:8080/grip' + '?gripper_percent=0.0',
     });
 }
 
