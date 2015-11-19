@@ -46,6 +46,36 @@ grid.prototype.draw = function(ctx) {
     this.flairhover.draw(ctx);
 }
 
+grid.prototype.mousedown = function(ctx, x, y, mode) {
+    if (mode == "PickPlace") {
+        this.pickplace_mousedown(ctx, x, y);
+    } else if (mode == "Follow") {
+        this.follow_mousedown(ctx, x, y);
+    }
+}
+
+grid.prototype.mousemove = function(ctx, x, y, mode) {
+    if (mode == "PickPlace") {
+        this.pickplace_mousemove(ctx, x, y);
+    } else if (mode == "Follow") {
+        this.follow_mousemove(ctx, x, y);
+    }
+}
+
+grid.prototype.mouseup = function(ctx, x, y, mode) {
+    if (mode == "PickPlace") {
+        this.pickplace_mouseup(ctx, x, y);
+    } else if (mode == "Follow") {
+        this.follow_mouseup(ctx, x, y);
+    }
+}
+
+grid.prototype.switch_mode = function(ctx, mode) {
+    this.flairdown.hidden = true;
+    this.flairmove.hidden = true;
+    this.draw(ctx);
+}
+
 grid.prototype.pickplace_mousedown = function(ctx, x, y) {
     this.flairdown.x = x;
     this.flairdown.y = y;
@@ -75,6 +105,28 @@ grid.prototype.pickplace_mouseup = function(ctx, x, y) {
     var place_phy = this.phy(this.flairmove.x, this.flairmove.y);
     console.log("pick: (" + pick_phy.x + ", " + pick_phy.y + ")");
     console.log("place: (" + place_phy.x + ", " + place_phy.y + ")");
+}
+
+grid.prototype.follow_mousedown = function(ctx, x, y) {
+    this.flairmove.hidden = false;
+    this.flairhover.hidden = true;
+    this.flairmove.interactive = true;
+    this.flairmove.x = x;
+    this.flairmove.y = y;
+    this.flairmove.draw(ctx);
+}
+
+grid.prototype.follow_mousemove = function(ctx, x, y) {
+    this.flairmove.x = x;
+    this.flairmove.y = y;
+    this.flairhover.x = x;
+    this.flairhover.y = y;
+}
+
+grid.prototype.follow_mouseup = function(ctx, x, y) {
+    this.flairmove.hidden = true;
+    this.flairhover.hidden = false;
+    this.flairhover.draw(ctx);
 }
 
 /* should have implemented change-of-basis for this, oh well */
