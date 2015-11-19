@@ -14,7 +14,7 @@ var grid = function(x, y, width, height) {
     this.y = this.height/2 - this.sq/2 + 2.5;
 
     this.px = -160;
-    this.py = 320;
+    this.py = -320;
     this.psq = 320;
     this.dp = 20;
 }
@@ -133,7 +133,7 @@ grid.prototype.follow_mouseup = function(ctx, x, y) {
 grid.prototype.phy = function(x, y) {
     return {
         x: lerp(x, 0, this.sq, 0, this.psq) + this.px,
-        y: lerp(y, 0, this.sq, 0, this.psq) + this.py
+        y: lerp(y, 0, this.sq, this.psq, 0)
     };
 }
 
