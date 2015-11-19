@@ -41,9 +41,9 @@ grid.prototype.draw = function(ctx) {
     ctx.stroke();
     ctx.restore();
 
+    this.flairhover.draw(ctx);
     this.flairdown.draw(ctx);
     this.flairmove.draw(ctx);
-    this.flairhover.draw(ctx);
 }
 
 grid.prototype.mousedown = function(ctx, x, y, mode) {
@@ -114,17 +114,26 @@ grid.prototype.follow_mousedown = function(ctx, x, y) {
     this.flairmove.x = x;
     this.flairmove.y = y;
     this.flairmove.draw(ctx);
+    var p = this.phy(x, y);
+    goto(p.x, p.y, 120, -90);
 }
 
 grid.prototype.follow_mousemove = function(ctx, x, y) {
-    this.flairmove.x = x;
-    this.flairmove.y = y;
+
     this.flairhover.x = x;
     this.flairhover.y = y;
+
+    if (this.flairmove.interactive == true) {
+        this.flairmove.x = x;
+        this.flairmove.y = y;
+        var p = this.phy(x, y);
+        goto(p.x, p.y, 120, -90);
+    }
 }
 
 grid.prototype.follow_mouseup = function(ctx, x, y) {
-    this.flairmove.hidden = true;
+    this.flairmove.interactive = false;
+    this.flairmove.hidden = false;
     this.flairhover.hidden = false;
     this.flairhover.draw(ctx);
 }
