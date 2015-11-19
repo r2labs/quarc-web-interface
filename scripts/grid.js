@@ -1,27 +1,52 @@
 /* The top left is the "x,y" reference corner */
-var grid = function(x, y, width, height, phywidth, phyheight) {
-    this.x = x;
-    this.y = y;
+var grid = function(x, y, width, height) {
+    this.ax = x;
+    this.ay = y;
     this.width = width;
     this.height = height;
-    this.phywidth = phywidth;
-    this.phyheight = phyheight;
-    this.flairdown = new flair(0, 0, 25, true, 'red');
-    this.flairmove = new flair(0, 0, 25, true, 'blue');
+    this.flairdown = new flair(0, 0, 20, true, 'red');
+    this.flairmove = new flair(0, 0, 20, true, 'blue');
+    this.flairhover = new flair(0, 0, 20, false, 'white');
+
+    this.sq = this.width < this.height ? this.width : this.height;
+    this.sq -= 10;
+    this.x = this.width/2 - this.sq/2 + 2.5;
+    this.y = this.height/2 - this.sq/2 + 2.5;
+
+    this.px = -160;
+    this.py = 320;
+    this.psq = 320;
+    this.dp = 20;
 }
 
 grid.prototype.draw = function(ctx) {
+    ctx.clearRect(this.ax, this.ay, this.width, this.height);
+
     ctx.save();
+    ctx.globalAlpha = 1.00;
+    var d = (1.0*this.dp*this.sq)/this.psq;
+    for (var i=this.x; i<this.sq+this.x; i+=d) {
+        for (var j=this.y; j<this.sq+this.y; j+=d) {
+            ctx.beginPath();
+            ctx.strokeStyle = "#a0a0a0";
+            ctx.lineWidth = 2;
+            ctx.rect(i, j, d, d);
+            ctx.stroke();
+        }
+    }
     ctx.beginPath();
-    ctx.fillStyle = 'green';
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-    ctx.fill();
+    ctx.strokeStyle="#b0b0b0";
+    ctx.lineWidth = 5;
+    ctx.rect(this.x, this.y, this.sq, this.sq);
+    ctx.stroke();
     ctx.restore();
+
     this.flairdown.draw(ctx);
     this.flairmove.draw(ctx);
+    this.flairhover.draw(ctx);
 }
 
-grid.prototype.mousedown = function(ctx, x, y) {
+grid.prototype.pickplace_mousedown = function(ctx, x, y) {
     this.flairdown.x = x;
     this.flairdown.y = y;
     this.flairdown.hidden = false;
@@ -30,19 +55,34 @@ grid.prototype.mousedown = function(ctx, x, y) {
     this.flairmove.x = x;
     this.flairmove.y = y;
     this.flairdown.draw(ctx);
+    this.flairhover.hidden = true;
 }
 
-grid.prototype.mousemove = function(ctx, x, y) {
+grid.prototype.pickplace_mousemove = function(ctx, x, y) {
     if (this.flairmove.interactive == true) {
         this.flairmove.x = x;
         this.flairmove.y = y;
     }
-    this.flairmove.draw(ctx);
+    this.flairhover.x = x;
+    this.flairhover.y = y;
 }
 
-grid.prototype.mouseup = function(ctx, x, y) {
+grid.prototype.pickplace_mouseup = function(ctx, x, y) {
+    this.flairhover.hidden = false;
     this.flairmove.interactive = false;
     this.flairmove.draw(ctx);
+    var pick_phy = this.phy(this.flairdown.x, this.flairdown.y);
+    var place_phy = this.phy(this.flairmove.x, this.flairmove.y);
+    console.log("pick: (" + pick_phy.x + ", " + pick_phy.y + ")");
+    console.log("place: (" + place_phy.x + ", " + place_phy.y + ")");
+}
+
+/* should have implemented change-of-basis for this, oh well */
+grid.prototype.phy = function(x, y) {
+    return {
+        x: lerp(x, 0, this.sq, 0, this.psq) + this.px,
+        y: lerp(y, 0, this.sq, 0, this.psq) + this.py
+    };
 }
 
 var flair = function(x, y, radius, hidden, style) {
@@ -56,7 +96,6 @@ var flair = function(x, y, radius, hidden, style) {
 
 flair.prototype.draw = function(ctx) {
     if (this.hidden == false) {
-        console.log("drawing flair: " + this.x + " " + this.y)
         ctx.save();
         ctx.beginPath();
         ctx.globalAlpha = 0.50;

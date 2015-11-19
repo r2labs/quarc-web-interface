@@ -5,3 +5,9 @@ function get_mouse_pos(cnv, evt) {
         y: evt.clientY - rect.top
     };
 }
+
+function lerp(x, x_min, x_max, y_min, y_max) {
+    if (x > x_max) { return y_max; }
+    else if (x < x_min) { return y_min; }
+    return y_min + ((y_max - y_min)*(x- x_min))/(x_max - x_min);
+}
