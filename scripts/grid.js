@@ -141,8 +141,8 @@ grid.prototype.follow_mouseup = function(ctx, x, y) {
 /* should have implemented change-of-basis for this, oh well */
 grid.prototype.phy = function(x, y) {
     return {
-        x: lerp(x, 0, this.sq, 0, this.psq) + this.px,
-        y: lerp(y, 0, this.sq, this.psq, 0)
+        x: lerp(x - this.x, 0.0, this.sq, -180.0, 180.0),
+        y: lerp(y - this.y, 0.0, this.sq, this.psq, 50.0)
     };
 }
 
