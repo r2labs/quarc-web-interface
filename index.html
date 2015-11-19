@@ -125,11 +125,11 @@
          grid_obj.switch_mode(grid_ctx, mode);
      });
 
-     grid_cnv.addEventListener('mousemove', function(evt) {
-         pos = get_mouse_pos(grid_obj, evt);
+     $("#grid").on('mousemove', throttle(function (event) {
+         pos = get_mouse_pos(grid_obj, event);
          grid_obj.mousemove(grid_ctx, pos.x, pos.y, mode);
          grid_obj.draw(grid_ctx);
-     }, false);
+     }, 30));
 
      grid_cnv.addEventListener("mousedown", function(evt) {
          click = get_mouse_pos(grid_obj, evt);
@@ -144,7 +144,6 @@
          grid_obj.draw(grid_ctx);
          console.log("release x: " + release.x + " y: " + release.y);
      }, false);
-
 
     </script>
   </body>
