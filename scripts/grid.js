@@ -163,6 +163,12 @@ flair.prototype.draw = function(ctx) {
         ctx.fillStyle = this.style;
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fill();
+        ctx.font = "18px Lato";
+        var p = grid_obj.phy(this.x, this.y);
+        console.log("x: " + p.x + " y: " + p.y);
+        ctx.globalAlpha = 1.00;
+        ctx.fillText("(" + Math.round(p.x) + ", " + Math.round(p.y) + ")",
+                     this.x + this.radius, this.y + this.radius);
         ctx.restore();
     }
 }
