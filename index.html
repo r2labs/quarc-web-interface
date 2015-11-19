@@ -46,7 +46,7 @@
           <div class="col-md-9">
             <div class="panel panel-primary">
               <div class="panel-body">
-                <canvas id="grid" width="800" height="450">
+                  <canvas id="grid" width="665" height="500">
                   Canvas Tag not supported
                 </canvas>
               </div>
@@ -112,7 +112,7 @@
     <script>
      var grid_cnv = document.getElementById("grid");
      var grid_ctx = grid_cnv.getContext("2d");
-     var grid_obj = new grid(0, 0, 640, 480, 320, 320);
+     var grid_obj = new grid(0, 0, grid_cnv.width, grid_cnv.height, 320, 320);
 
      var pos;
      var click;
@@ -120,16 +120,21 @@
 
      grid_cnv.addEventListener('mousemove', function(evt) {
          pos = get_mouse_pos(grid_obj, evt);
+         grid_obj.mousemove(grid_ctx, pos.x, pos.y);
+         grid_obj.draw(grid_ctx);
      }, false);
 
      grid_cnv.addEventListener("mousedown", function(evt) {
          click = get_mouse_pos(grid_obj, evt);
+         grid_obj.mousedown(grid_ctx, click.x, click.y);
          grid_obj.draw(grid_ctx);
          console.log("click x: " + click.x + " y: " + click.y);
      }, false);
 
      grid_cnv.addEventListener("mouseup", function(evt) {
          release = get_mouse_pos(grid_obj, evt);
+         grid_obj.mouseup(grid_ctx, release.x, release.y);
+         grid_obj.draw(grid_ctx);
          console.log("release x: " + release.x + " y: " + release.y);
      }, false);
 
