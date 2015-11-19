@@ -56,39 +56,12 @@ var flair = function(x, y, radius, hidden, style) {
 flair.prototype.draw = function(ctx) {
     if (this.hidden == false) {
         console.log("drawing flair: " + this.x + " " + this.y)
-
         ctx.save();
         ctx.beginPath();
+        ctx.globalAlpha = 0.50;
         ctx.fillStyle = this.style;
-        ctx.fillRect(this.x, this.y, this.radius, this.radius);
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fill();
         ctx.restore();
-
-        /* var radius = 10; */
-        /* var center_x = this.x + this.width/2; */
-        /* var center_y = this.y + this.height/2; */
-        /* var overlay_radius = this.height > this.width ? this.width*2/5 : this.height*2/5; */
-        /* var inner_radius = overlay_radius*2/5; */
-
-        /* ctx.save(); */
-        /* ctx.beginPath(); */
-        /* ctx.globalAlpha = 1.0; */
-        /* ctx.fillStyle = this.style; */
-        /* ctx.arc(center_x, center_y, overlay_radius, 0, Math.PI * 2, false); */
-        /* ctx.fill(); */
-
-        /* ctx.beginPath(); */
-        /* ctx.arc(center_x, center_y, overlay_radius, 0, Math.PI * 2, false); */
-        /* ctx.clip(); */
-
-        /* ctx.beginPath(); */
-        /* ctx.strokeStyle = 'white'; */
-        /* ctx.lineWidth = 5; */
-        /* ctx.shadowBlur = 30; */
-        /* ctx.shadowColor = 'white'; */
-        /* ctx.shadowOffsetX = 0; */
-        /* ctx.shadowOffsetY = 0; */
-        /* ctx.arc(center_x, center_y, radius+3, 0, Math.PI * 2, false); */
-        /* ctx.stroke(); */
     }
 }
