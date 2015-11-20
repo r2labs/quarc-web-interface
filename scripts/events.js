@@ -38,12 +38,18 @@ function rest() {
     jQuery.ajax({
         url: 'http://localhost:8080/rest'
     });
+    grid_obj.flairmove.hidden = true;
+    grid_obj.flairdown.hidden = true;
+    grid_obj.draw(grid_ctx);
 }
 
 function cancel() {
     jQuery.ajax({
         url: 'http://localhost:8080/cancel'
     });
+    grid_obj.flairmove.hidden = true;
+    grid_obj.flairdown.hidden = true;
+    grid_obj.draw(grid_ctx);
 }
 
 function pickplace(pick_x, pick_y, place_x, place_y) {
