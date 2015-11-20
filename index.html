@@ -7,6 +7,7 @@
     <title>QuARC User Interface</title>
     <!-- Bootswatch "Superhero" theme -->
     <link type="text/css" rel="stylesheet" href="./bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="./custom.css">
     <!-- JQuery -->
     <script src="jquery-2.1.0.min.js"></script>
     <!-- Latest compiled and minified JavaScript for Bootstrap -->
@@ -45,9 +46,11 @@
           <div class="col-md-9">
             <div class="panel panel-primary">
               <div class="panel-body">
-                  <canvas id="grid" width="665" height="600">
-                  Canvas Tag not supported
-                </canvas>
+                  <video id="monitor" style="position: absolute;" autoplay>
+                  </video>
+                  <canvas id="grid" width="640" height="480" style="z-index: 20;">
+                      Canvas Tag not supported
+                  </canvas>
               </div>
             </div>
           </div>
@@ -69,6 +72,8 @@
                       <label><input type="radio" name="modeRadios" id="modeRadioFollow" value="Follow">Follow Mouse</label>
                     </div>
                   </div>
+                  <br />
+                  <button type="button" class="btn btn-primary" onclick="js:toggle_camera()">Camera</a>
                 </div>
               </div>
             </div>
@@ -77,13 +82,13 @@
                 <h3 class="panel-title">Information</h3>
               </div>
               <div class="panel-body">
+                  <!-- <div class="progress progress-striped progress-active"> -->
+                  <!--   <div id="z-progress" class="progress-bar" style="width: 60%;"></div> -->
+                  <!-- </div> -->
                 <div class="container">
                   <canvas id="self_player_canvas" width="70" height="70">
                     Canvas Tag not supported
                   </canvas>
-                  <!-- <div class="progress progress-striped progress-active"> -->
-                  <!--   <div class="progress-bar" style="width: 60%;"></div> -->
-                  <!-- </div> -->
                 </div>
               </div>
             </div>
@@ -113,6 +118,8 @@
      var grid_cnv = document.getElementById("grid");
      var grid_ctx = grid_cnv.getContext("2d");
      var grid_obj = new grid(0, 0, grid_cnv.width, grid_cnv.height);
+
+     var video = document.getElementById("monitor");
 
      var pos;
      var click;
@@ -144,6 +151,50 @@
          grid_obj.draw(grid_ctx);
          console.log("release x: " + release.x + " y: " + release.y);
      }, false);
+
+     $("#monitor").on('mousemove', throttle(function (event) {
+         pos = get_mouse_pos(grid_obj, event);
+         grid_obj.mousemove(grid_ctx, pos.x, pos.y, mode);
+         grid_obj.draw(grid_ctx);
+     }, 30));
+
+     video.addEventListener("mousedown", function(evt) {
+         click = get_mouse_pos(grid_obj, evt);
+         grid_obj.mousedown(grid_ctx, click.x, click.y, mode);
+         grid_obj.draw(grid_ctx);
+         console.log("click x: " + click.x + " y: " + click.y);
+     }, false);
+
+     video.addEventListener("mouseup", function(evt) {
+         release = get_mouse_pos(grid_obj, evt);
+         grid_obj.mouseup(grid_ctx, release.x, release.y, mode);
+         grid_obj.draw(grid_ctx);
+         console.log("release x: " + release.x + " y: " + release.y);
+     }, false);
+
+
+     function gotStream(stream) {
+         console.log("Getting Stream");
+         if (window.URL) {
+             video.src = window.URL.createObjectURL(stream);
+         } else {
+             video.src = stream; // Opera.
+         }
+         video.src = window.URL.createObjectURL(stream);
+     }
+
+     function noStream(error) {
+         console.log("Could not get user media");
+         alert("Could not get user media");
+     }
+
+     function toggle_camera() {
+         console.log("toggling camera");
+         navigator.getUserMedia = navigator.webkitGetUserMedia;
+         navigator.getUserMedia({video: true}, gotStream, noStream);
+         $("#monitor").css("width", grid_cnv.width);
+         $("#monitor").css("height", grid_cnv.height);
+     }
 
     </script>
   </body>

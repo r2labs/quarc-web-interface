@@ -1,5 +1,3 @@
-var event;
-
 function goto(x, y, z, ga) {
     if (ga == undefined) { ga = -90; }
     jQuery.ajax({

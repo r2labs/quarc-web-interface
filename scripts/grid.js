@@ -23,7 +23,7 @@ grid.prototype.draw = function(ctx) {
     ctx.clearRect(this.ax, this.ay, this.width, this.height);
 
     ctx.save();
-    ctx.globalAlpha = 1.00;
+    ctx.globalAlpha = 0.10;
     var d = (1.0*this.dp*this.sq)/this.psq;
     for (var i=this.x; i<this.sq+this.x; i+=d) {
         for (var j=this.y; j<this.sq+this.y; j+=d) {
@@ -34,6 +34,7 @@ grid.prototype.draw = function(ctx) {
             ctx.stroke();
         }
     }
+    ctx.globalAlpha = 0.50;
     ctx.beginPath();
     ctx.strokeStyle="#b0b0b0";
     ctx.lineWidth = 5;
