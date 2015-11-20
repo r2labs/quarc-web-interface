@@ -18,22 +18,32 @@ function ungrip() {
     });
 }
 
-function pick(x, y, z) {
+function pick(x, y, z, ga) {
     if (z == undefined) { z = 40; }
-    goto(x, y, 120);
-    ungrip();
-    goto(x, y, 120);
-    window.setTimeout(function() { goto(x, y, z)}, 1000);
-    window.setTimeout(function() { grip()}, 2000);
-    window.setTimeout(function() { goto(x, y, 120)}, 3000);
+    if (ga == undefined) { ga = -90; }
+    jQuery.ajax({
+        url: 'http://localhost:8080/pick' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
+    });
 }
 
-function place(x, y, z) {
+function place(x, y, z, ga) {
     if (z == undefined) { z = 40; }
-    goto(x, y, 120);
-    window.setTimeout(function() { goto(x, y, z)}, 1000);
-    window.setTimeout(function() { ungrip()}, 2000);
-    window.setTimeout(function() { goto(x, y, 120)}, 3000);
+    if (ga == undefined) { ga = -90; }
+    jQuery.ajax({
+        url: 'http://localhost:8080/place' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
+    });
+}
+
+function rest() {
+    jQuery.ajax({
+        url: 'http://localhost:8080/rest'
+    });
+}
+
+function cancel() {
+    jQuery.ajax({
+        url: 'http://localhost:8080/cancel'
+    });
 }
 
 function pickplace(pick_x, pick_y, place_x, place_y) {
