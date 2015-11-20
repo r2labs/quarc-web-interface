@@ -129,6 +129,8 @@
     <script src="./scripts/events.js"></script>
     <script src="./scripts/grid.js"></script>
     <script src="./scripts/helper.js"></script>
+    <script src="./scripts/camera.js"></script>
+    <script src="./scripts/robocontrol.js"></script>
     <script>
      var grid_cnv = document.getElementById("grid");
      var grid_ctx = grid_cnv.getContext("2d");
@@ -141,6 +143,8 @@
      var release;
 
      var mode = $('input[name$="modeRadios"]').val();
+
+     $('#camera-controls').hide();
 
      $('input[name$="modeRadios"]').change(function() {
          mode = $(this).val();
@@ -196,11 +200,13 @@
              video.src = stream; // Opera.
          }
          video.src = window.URL.createObjectURL(stream);
+         $("#camera-controls").show(500);
      }
 
      function noStream(error) {
          console.log("Could not get user media");
          alert("Could not get user media");
+         $("#camera-controls").hide();
      }
 
      function toggle_camera() {
