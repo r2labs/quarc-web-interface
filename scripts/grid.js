@@ -17,6 +17,8 @@ var grid = function(x, y, width, height) {
     this.py = -320;
     this.psq = 320;
     this.dp = 20;
+
+    this.contours = [];
 }
 
 grid.prototype.draw = function(ctx) {
@@ -45,6 +47,10 @@ grid.prototype.draw = function(ctx) {
     this.flairhover.draw(ctx);
     this.flairdown.draw(ctx);
     this.flairmove.draw(ctx);
+
+    for (var i=0; i<this.contours.length; ++i) {
+        this.contours[i].draw(ctx);
+    }
 }
 
 grid.prototype.mousedown = function(ctx, x, y, mode) {
