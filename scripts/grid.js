@@ -2,35 +2,24 @@ var n_requests = 0
 
 /* The top left is the "x,y" reference corner */
 var grid = function(x, y, width, height) {
-    this.ax = x;
-    this.ay = y;
+    this.x = x;
+    this.y = y;
     this.width = width;
     this.height = height;
     this.flairdown = new flair(0, 0, 20, true, 'red');
     this.flairmove = new flair(0, 0, 20, true, 'blue');
     this.flairhover = new flair(0, 0, 20, false, 'white');
-
-    this.sq = this.width < this.height ? this.width : this.height;
-    this.sq -= 10;
-    this.x = this.width/2 - this.sq/2 + 2.5;
-    this.y = this.height/2 - this.sq/2 + 2.5;
-
-    this.px = -160;
-    this.py = -320;
-    this.psq = 320;
-    this.dp = 20;
-
     this.contours = [];
 }
 
 grid.prototype.draw = function(ctx) {
-    ctx.clearRect(this.ax, this.ay, this.width, this.height);
+    ctx.clearRect(0, 0, this.width + this.x*2, this.height + this.y*2);
 
     ctx.save();
     ctx.globalAlpha = 0.10;
-    var d = (1.0*this.dp*this.sq)/this.psq;
-    for (var i=this.x; i<this.sq+this.x; i+=d) {
-        for (var j=this.y; j<this.sq+this.y; j+=d) {
+    var d = 20;
+    for (var i=this.x; i<this.width+this.x; i+=d) {
+        for (var j=this.y; j<this.height+this.y; j+=d) {
             ctx.beginPath();
             ctx.strokeStyle = "#a0a0a0";
             ctx.lineWidth = 2;
@@ -38,11 +27,11 @@ grid.prototype.draw = function(ctx) {
             ctx.stroke();
         }
     }
-    ctx.globalAlpha = 0.50;
+    ctx.globalAlpha = 0.75;
     ctx.beginPath();
     ctx.strokeStyle="#b0b0b0";
     ctx.lineWidth = 5;
-    ctx.rect(this.x, this.y, this.sq, this.sq);
+    ctx.rect(this.x, this.y, this.width, this.height);
     ctx.stroke();
     ctx.restore();
 
@@ -109,11 +98,9 @@ grid.prototype.pickplace_mouseup = function(ctx, x, y) {
     this.flairhover.hidden = false;
     this.flairmove.interactive = false;
     this.flairmove.draw(ctx);
-    var pick_phy = this.phy(this.flairdown.x, this.flairdown.y);
-    var place_phy = this.phy(this.flairmove.x, this.flairmove.y);
-    console.log("pick: (" + pick_phy.x + ", " + pick_phy.y + ")");
-    console.log("place: (" + place_phy.x + ", " + place_phy.y + ")");
-    pickplace(pick_phy.x, pick_phy.y, place_phy.x, place_phy.y);
+    console.log("pick: (" + this.flairdown.x + ", " + this.flairdown.y + ")");
+    console.log("place: (" + this.flairmove.x + ", " + this.flairmove.y + ")");
+    pickplace(this.flairdown.x, this.flairdown.y, this.flairmove.x, this.flairmove.y);
 }
 
 grid.prototype.follow_mousedown = function(ctx, x, y) {
@@ -123,8 +110,7 @@ grid.prototype.follow_mousedown = function(ctx, x, y) {
     this.flairmove.x = x;
     this.flairmove.y = y;
     this.flairmove.draw(ctx);
-    var p = this.phy(x, y);
-    goto(p.x, p.y, 100, -90);
+    goto(x, y, 100, -90);
 }
 
 grid.prototype.follow_mousemove = function(ctx, x, y) {
@@ -135,11 +121,9 @@ grid.prototype.follow_mousemove = function(ctx, x, y) {
     if (this.flairmove.interactive == true) {
         this.flairmove.x = x;
         this.flairmove.y = y;
-        var p = this.phy(x, y);
         n_requests++;
         if ((n_requests % 10) == 0) {
-            console.log("throttled! " + p.x);
-            goto(p.x, p.y, 100, -90)
+            goto(x, y, 100, -90)
         }
     }
 }
@@ -149,14 +133,6 @@ grid.prototype.follow_mouseup = function(ctx, x, y) {
     this.flairmove.hidden = false;
     this.flairhover.hidden = false;
     this.flairhover.draw(ctx);
-}
-
-/* should have implemented change-of-basis for this, oh well */
-grid.prototype.phy = function(x, y) {
-    return {
-        x: lerp(x - this.x, 0.0, this.sq, -180.0, 180.0),
-        y: lerp(y - this.y, 0.0, this.sq, this.psq, 50.0)
-    };
 }
 
 var flair = function(x, y, radius, hidden, style) {
@@ -177,11 +153,12 @@ flair.prototype.draw = function(ctx) {
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         ctx.fill();
         ctx.font = "18px Lato";
-        var p = grid_obj.phy(this.x, this.y);
-        /* console.log("x: " + p.x + " y: " + p.y); */
         ctx.globalAlpha = 1.00;
-        ctx.fillText("(" + Math.round(p.x) + ", " + Math.round(p.y) + ")",
-                     this.x + this.radius, this.y + this.radius);
+
+        textx = this.x < grid_obj.width - 100 ? this.x : this.x - 120;
+        texty = this.y < grid_obj.height - 30 ? this.y : this.y - 30;
+        ctx.fillText("(" + Math.round(this.x) + ", " + Math.round(this.y) + ")",
+                     textx + this.radius, texty + this.radius);
         ctx.restore();
     }
 }

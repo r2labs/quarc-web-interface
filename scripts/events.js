@@ -1,7 +1,16 @@
+function phy(x, y) {
+    return {
+        x: 200.0 - x*3.0/4.0,
+        y: y*3.0/4.0 + 60.0
+    }
+}
+
 function goto(x, y, z, ga) {
+    p = phy(x, y);
+    console.log('http://localhost:8080/goto' + '?x=' + p.x + "&y=" + p.y + "&z=" + z + "&gripper_angle_degrees=" + ga)
     if (ga == undefined) { ga = -90; }
     jQuery.ajax({
-        url: 'http://localhost:8080/goto' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
+        url: 'http://localhost:8080/goto' + '?x=' + p.x + "&y=" + p.y + "&z=" + z + "&gripper_angle_degrees=" + ga,
     });
 }
 
@@ -19,18 +28,20 @@ function ungrip() {
 }
 
 function pick(x, y, z, ga) {
+    p = phy(x, y)
     if (z == undefined) { z = 5; }
     if (ga == undefined) { ga = -90; }
     jQuery.ajax({
-        url: 'http://localhost:8080/pick' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
+        url: 'http://localhost:8080/pick' + '?x=' + p.x + "&y=" + p.y + "&z=" + z + "&gripper_angle_degrees=" + ga,
     });
 }
 
 function place(x, y, z, ga) {
+    p = phy(x, y)
     if (z == undefined) { z = 5; }
     if (ga == undefined) { ga = -90; }
     jQuery.ajax({
-        url: 'http://localhost:8080/place' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
+        url: 'http://localhost:8080/place' + '?x=' + p.x + "&y=" + p.y + "&z=" + z + "&gripper_angle_degrees=" + ga,
     });
 }
 

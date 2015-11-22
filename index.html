@@ -48,7 +48,7 @@
               <div class="panel-body">
                   <video id="monitor" style="position: absolute;" autoplay>
                   </video>
-                  <canvas id="grid" width="640" height="480" style="z-index: 20;">
+                  <canvas id="grid" width="620" height="420" style="z-index: 20;">
                       Canvas Tag not supported
                   </canvas>
               </div>
@@ -146,7 +146,7 @@
     <script>
      var grid_cnv = document.getElementById("grid");
      var grid_ctx = grid_cnv.getContext("2d");
-     var grid_obj = new grid(0, 0, grid_cnv.width, grid_cnv.height);
+     var grid_obj = new grid(10, 10, 600, 400);
 
      var video = document.getElementById("monitor");
 
