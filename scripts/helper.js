@@ -12,8 +12,8 @@ function lerp(x, x_min, x_max, y_min, y_max) {
     return y_min + ((y_max - y_min)*(x- x_min))/(x_max - x_min);
 }
 
-function throttle(fn, threshhold, scope) {
-    threshhold || (threshhold = 250);
+function throttle(fn, threshold, scope) {
+    if (threshold == undefined) { threshold = 250; }
     var last,
         deferTimer;
     return function () {
@@ -21,13 +21,13 @@ function throttle(fn, threshhold, scope) {
 
         var now = +new Date,
             args = arguments;
-        if (last && now < last + threshhold) {
+        if (last && now < last + threshold) {
             // hold on to it
             clearTimeout(deferTimer);
             deferTimer = setTimeout(function () {
                 last = now;
                 fn.apply(context, args);
-            }, threshhold);
+            }, threshold);
         } else {
             last = now;
             fn.apply(context, args);
