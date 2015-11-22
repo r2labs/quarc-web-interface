@@ -19,7 +19,7 @@ function ungrip() {
 }
 
 function pick(x, y, z, ga) {
-    if (z == undefined) { z = 40; }
+    if (z == undefined) { z = 5; }
     if (ga == undefined) { ga = -90; }
     jQuery.ajax({
         url: 'http://localhost:8080/pick' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
@@ -27,7 +27,7 @@ function pick(x, y, z, ga) {
 }
 
 function place(x, y, z, ga) {
-    if (z == undefined) { z = 40; }
+    if (z == undefined) { z = 5; }
     if (ga == undefined) { ga = -90; }
     jQuery.ajax({
         url: 'http://localhost:8080/place' + '?x=' + x + "&y=" + y + "&z=" + z + "&gripper_angle_degrees=" + ga,
