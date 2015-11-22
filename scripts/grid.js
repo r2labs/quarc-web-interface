@@ -1,3 +1,5 @@
+var n_requests = 0
+
 /* The top left is the "x,y" reference corner */
 var grid = function(x, y, width, height) {
     this.ax = x;
@@ -122,7 +124,7 @@ grid.prototype.follow_mousedown = function(ctx, x, y) {
     this.flairmove.y = y;
     this.flairmove.draw(ctx);
     var p = this.phy(x, y);
-    goto(p.x, p.y, 120, -90);
+    goto(p.x, p.y, 100, -90);
 }
 
 grid.prototype.follow_mousemove = function(ctx, x, y) {
@@ -134,7 +136,11 @@ grid.prototype.follow_mousemove = function(ctx, x, y) {
         this.flairmove.x = x;
         this.flairmove.y = y;
         var p = this.phy(x, y);
-        goto(p.x, p.y, 120, -90);
+        n_requests++;
+        if ((n_requests % 10) == 0) {
+            console.log("throttled! " + p.x);
+            goto(p.x, p.y, 100, -90)
+        }
     }
 }
 
