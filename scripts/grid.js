@@ -16,6 +16,17 @@ grid.prototype.draw = function(ctx) {
     ctx.clearRect(0, 0, this.width + this.x*2, this.height + this.y*2);
 
     ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = "black";
+    ctx.rect(this.width+this.x, this.y, -this.width, this.height);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(this.width/2, 0, 290+40, 0, 2 * Math.PI);
+    ctx.clip();
+    ctx.clearRect(this.width+this.x, this.y, -this.width, this.height);
+    ctx.restore();
+
+    ctx.save();
     ctx.globalAlpha = 0.10;
     var d = 20;
     for (var i=this.x; i<this.width+this.x; i+=d) {
