@@ -38,6 +38,7 @@ grid.prototype.draw = function(ctx) {
             ctx.stroke();
         }
     }
+
     ctx.globalAlpha = 0.75;
     ctx.beginPath();
     ctx.strokeStyle="#b0b0b0";
@@ -158,6 +159,7 @@ var flair = function(x, y, radius, hidden, style) {
 flair.prototype.draw = function(ctx) {
     if (this.hidden == false) {
         ctx.save();
+
         ctx.beginPath();
         ctx.globalAlpha = 0.50;
         ctx.fillStyle = this.style;

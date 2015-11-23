@@ -21,8 +21,8 @@ var contour = function(cx, cy, points, color, rad) {
 
 contour.prototype.draw = function(ctx) {
     ctx.save();
-    ctx.setTransform(4.0/3.0, 0, 0, 4.0/3.0, 0, 0);
-    ctx.globalAlpha = 0.50;
+    ctx.setTransform(4.0/3.0, 0, 0, 4.0/3.0, 0, -10);
+    ctx.globalAlpha = 0.70;
     ctx.beginPath(ctx);
     ctx.fillStyle = this.color;
     ctx.lineWidth = 5;
