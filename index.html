@@ -66,13 +66,30 @@
                   <p><strong>Interface Mode</strong></p>
                   <div class="container" id="modeRadiosContainer">
                     <div class="radio">
-                      <label><input type="radio" name="modeRadios" id="modeRadioFollow" value="Follow" checked="">Follow Mouse</label>
+                      <label><input type="radio" name="modeRadios" id="modeRadioFollow" value="Follow" onclick="js:handle_mode_radios()" checked="">Follow Mouse</label>
                     </div>
                     <div class="radio">
-                      <label><input type="radio" name="modeRadios" id="modeRadioPickPlace" value="PickPlace">Pick & Place</label>
+                      <label><input type="radio" name="modeRadios" id="modeRadioPickPlace" value="PickPlace" onclick="js:handle_mode_radios()">Pick & Place</label>
                     </div>
                     <div class="radio">
-                      <label><input type="radio" name="modeRadios" id="modeRadioSort" value="Sort" onclick="js:sort()">Sort Objects</label>
+                      <label><input type="radio" name="modeRadios" id="modeRadioSort" value="Sort" onclick="js:handle_mode_radios()">Sort Objects</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="modeRadios" id="modeRadioDomino" value="Domino" onclick="js:handle_mode_radios()">Domino Routine</label>
+                      <div id="domino-controls">
+                        <br />
+                        <div class="dropdown">
+                          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Routine Selection
+                            <span class="caret"></span></button>
+                          <ul class="dropdown-menu">
+                            <li><a href="#" onclick="js:domino('lightning')">Lightning (8)</a></li>
+                            <li><a href="#" onclick="js:domino('prodigous')">Prodigous (6)</a></li>
+                            <li><a href="#" onclick="js:domino('stormy')">Stormy (8)</a></li>
+                            <li><a href="#" onclick="js:domino('straight')">Straight (7)</a></li>
+                            <li><a href="#" onclick="js:domino('virgin')">Vee (11)</a></li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <br />
@@ -160,6 +177,7 @@
      var mode = $('input[name$="modeRadios"]').val();
 
      $('#camera-controls').hide();
+     $('#domino-controls').hide();
 
      $('input[name$="modeRadios"]').change(function() {
          mode = $(this).val();

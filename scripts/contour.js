@@ -2,14 +2,20 @@ var get_contours = function() {
     jQuery.getJSON("http://localhost:8080/vision", function(data) {
         grid_obj.contours = []
         jQuery.each(data.items, function(i, item) {
-            c = new contour(item.cx, item.cy, item.points, item.color, item.radius);
+            for (var i=0; i<item.points.length; ++i) {
+                var v = virt(item.points[i][0], item.points[i][1]);
+                item.points[i][0] = v.x;
+                item.points[i][1] = v.y;
+            }
+            var v = virt(item.cx, item.cy);
+            c = new contour(v.x, v.y, item.points, item.color, item.radius);
             grid_obj.contours.push(c);
         });
         grid_obj.draw(grid_ctx);
     })
 }
 
-window.setInterval(get_contours, 100);
+window.setInterval(get_contours, 500);
 
 var contour = function(cx, cy, points, color, rad) {
     this.cx = cx;
@@ -21,7 +27,6 @@ var contour = function(cx, cy, points, color, rad) {
 
 contour.prototype.draw = function(ctx) {
     ctx.save();
-    ctx.setTransform(4.0/3.0, 0, 0, 4.0/3.0, 0, -10);
     ctx.globalAlpha = 0.70;
     ctx.beginPath(ctx);
     ctx.fillStyle = this.color;

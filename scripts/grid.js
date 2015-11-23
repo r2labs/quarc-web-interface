@@ -21,7 +21,7 @@ grid.prototype.draw = function(ctx) {
     ctx.rect(this.width+this.x, this.y, -this.width, this.height);
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(this.width/2, 0, 290+40, 0, 2 * Math.PI);
+    ctx.arc(this.width/2+this.x, 0, 290+40, 0, 2 * Math.PI);
     ctx.clip();
     ctx.clearRect(this.width+this.x, this.y, -this.width, this.height);
     ctx.restore();
