@@ -63,6 +63,17 @@ function cancel() {
     grid_obj.draw(grid_ctx);
 }
 
+function sort() {
+    jQuery.ajax({
+        url:'http://localhost:8080/sort',
+        complete: function(callback) {
+            if ($('input[name="modeRadios"]:checked').val() == "Sort") {
+                sort();
+            }
+        }
+    });
+}
+
 function pickplace(pick_x, pick_y, place_x, place_y) {
     window.setTimeout(function() { pick(pick_x, pick_y) }, 150);
     window.setTimeout(function() { place(place_x, place_y) }, 3500);
